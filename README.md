@@ -3,7 +3,14 @@
 ## Sitecore Official Sites
 * [Official Site](http://www.sitecore.com/) - Sitecore's offical site
 * [Study guide](https://learning.sitecore.com/exam/study-guide-sitecore-10-net-developer-certification-exam) - Sitecore 10 .NET Developer Certification Exam
-* Sitecore 
+
+* [Sitecore Documentation](https://doc.sitecore.com/xp/en/developers/101/index.html) - Sitecore Documentation
+* [Sitecore Downloads](https://dev.sitecore.net/) - Sitecore Downloads
+* [Sitecore Knowledge Base](https://support.sitecore.com/kb) - Sitecore Knowledge Base
+* [Sitecore Stack Exchange](https://sitecore.stackexchange.com/) - Sitecore Stack Exchange
+* [Sitecore Slack Chanel](https://sitecore.chat/) - Sitecore Slack Chanel
+* [XX]() - XXX
+
 
 
 ## Exam recomendations
@@ -28,7 +35,15 @@ Certified Sitecore 10 .NET Developers will be expected to have fundamental knowl
 * Competency 6: Sitecore Content Serialization - 10%
 * Competency 7: Containers - 6%
 
-# Exam process and structure
+
+
+## Developer's Fundamentals 10 Collection
+### Sitecore 10 Development Features Overview (3h)
+
+### Introduction to Sitecore Content Serialization 10 (3h)
+### Get Started with Containers for Sitecore (4h)
+### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
+### Developing with the ASP.NET Core Rendering SDK(2h 30m)
 
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
