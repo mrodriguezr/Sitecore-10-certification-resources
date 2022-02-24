@@ -39,6 +39,7 @@ Certified Sitecore 10 .NET Developers will be expected to have fundamental knowl
 
 ## Developer's Fundamentals 10 Collection
 ### Sitecore 10 Development Features Overview (3h)
+#### TRACK 1: EXPLORE THE NEW TOOLS AVAILABLE WITH SITECORE 10
 
 ### Introduction to Sitecore Content Serialization 10 (3h)
 ### Get Started with Containers for Sitecore (4h)
