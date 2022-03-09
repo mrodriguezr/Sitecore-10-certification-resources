@@ -40,6 +40,21 @@ Certified Sitecore 10 .NET Developers will be expected to have fundamental knowl
 ## Developer's Fundamentals 10 Collection
 ### Sitecore 10 Development Features Overview (3h)
 #### TRACK 1: EXPLORE THE NEW TOOLS AVAILABLE WITH SITECORE 10
+##### Sitecore 10 containers
+
+##### Sitecore content serialization
+Allows to login, manage and publish items directly from the command. Same features are available on Sitecore for Visual Studio
+Other options available in the market
+* Sitecore TDS
+* Unicorn
+
+##### Sitecore ASP.NET Core Rendering SDK
+An additional headless development option, this SDK
+Existing options for developing in Sitecore 10
+* JSS
+* ASP.NET SDK
+* Sitecore MVC
+* SXA
 
 ### Introduction to Sitecore Content Serialization 10 (3h)
 ### Get Started with Containers for Sitecore (4h)
