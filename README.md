@@ -38,7 +38,8 @@ Certified Sitecore 10 .NET Developers will be expected to have fundamental knowl
 
 
 ## Developer's Fundamentals 10 Collection
-### Sitecore 10 Development Features Overview (3h)
+### Sitecore 10 Development Features Overview (3h) / Single 1: Discover the Sitecore 10 Development Offerings
+
 #### TRACK 1: EXPLORE THE NEW TOOLS AVAILABLE WITH SITECORE 10
 ##### Sitecore 10 containers
 
@@ -55,6 +56,32 @@ Existing options for developing in Sitecore 10
 * ASP.NET SDK
 * Sitecore MVC
 * SXA
+
+
+#### TRACK 2: REVIEW THE SITECORE 1- DEVELOPMENT EXPERIENCE
+Five of the key benefits of Sitecore with containers, the new Sitecore Serialization option, and the new ASP.NET Core Rendering SDK
+* Benefit 1: Increased Developer Productivity
+* Benefit 2: Lower Cost of Ownership: Managed Cloud or containerized implementations. you won't need separate virtual machines for every customer project you work on as a partner Developer
+* Benefit 3: Faster Developer Onboarding: development teams can emphasize consistency by containerizing their custom-build setup alongside Sitecore itself.
+* Benefit 4: Updating to a Modern Development Stack: containers and ASP.NET Core
+* Benefit 5: Getting Started Quickly with Sitecore 10: [Getting started template](https://doc.sitecore.com/xp/en/developers/100/developer-tools/walkthrough--using-the-getting-started-template.html)
+
+
+#### TRACK 3: LOCATE THE RESOURCES FOR SITECORE 10 DEVELOPMENT
+
+* Sitecore 10 documentation: https://doc.sitecore.com/ With a section dedicated to Developer and IT Pros, you will find all the latest information about any given Sitecore release provided directly by Sitecore
+* Sitecore downloads: https://dev.sitecore.net/ On the downloads site, you will be able to download individual product packages or a full product SIF for your selected release version of Sitecore. Additionally, you can access the Knowledge Base (KB).  Downloading from this site requires you to be a registered Sitecore Developer or have temporary access for training to become a Sitecore Certified Developer.
+* Sitecore Stack Exchange: https://sitecore.stackexchange.com/
+* Sitecore Slack Community channels: https://sitecore.chat/
+* The Sitecore Support Portal: As a Sitecore Certified Developer, you will gain access to the Sitecore Support Portal (support.sitecore.com). Training related support, type Sitecore Learning Management System
+
+#### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/158073152-a77168cc-8568-4a40-a278-35ba82484fdf.png)
+![image](https://user-images.githubusercontent.com/1063617/158073174-a90b1f34-47c9-4d73-b6c4-a71719fff2b6.png)
+![image](https://user-images.githubusercontent.com/1063617/158073197-ad0e0afc-8103-421d-b63d-71bb75b40c69.png)
+![image](https://user-images.githubusercontent.com/1063617/158073219-1d596d8d-4614-4f1a-8274-6140ea3569b3.png)
+
+
 
 ### Introduction to Sitecore Content Serialization 10 (3h)
 ### Get Started with Containers for Sitecore (4h)
