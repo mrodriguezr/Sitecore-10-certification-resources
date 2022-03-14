@@ -145,6 +145,16 @@ The Sitecore Content Serialization tool brings together the best of TDS and Unic
 
 
 ### Introduction to Sitecore Content Serialization 10 (3h)
+### Single 1: Explore Sitecore Content Serialization
+Sitecore Content Serialization allows you to easily put items into source control, build deployment scripts that push items to various environments, and create packages for later deployment
+
+#### Track 1: Understand content serialization
+* With Sitecore 10, the new Sitecore Command Line Interface (CLI) and Sitecore for Visual Studio bring about the best of both TDS and Unicorn to provide an optimized serialization experience for Developers
+
+#### Track 2: Configure Sitecore Command Line Interface (CLI)
+#### Track 3: Set up Sitecore for Visual Studio
+
+
 ### Get Started with Containers for Sitecore (4h)
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
 ### Developing with the ASP.NET Core Rendering SDK(2h 30m)
