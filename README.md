@@ -38,7 +38,8 @@ Certified Sitecore 10 .NET Developers will be expected to have fundamental knowl
 
 
 ## Developer's Fundamentals 10 Collection
-### Sitecore 10 Development Features Overview (3h) / Single 1: Discover the Sitecore 10 Development Offerings
+### Sitecore 10 Development Features Overview (3h) 
+### Single 1: Discover the Sitecore 10 Development Offerings
 
 #### TRACK 1: EXPLORE THE NEW TOOLS AVAILABLE WITH SITECORE 10
 ##### Sitecore 10 containers
@@ -80,6 +81,48 @@ Five of the key benefits of Sitecore with containers, the new Sitecore Serializa
 ![image](https://user-images.githubusercontent.com/1063617/158073174-a90b1f34-47c9-4d73-b6c4-a71719fff2b6.png)
 ![image](https://user-images.githubusercontent.com/1063617/158073197-ad0e0afc-8103-421d-b63d-71bb75b40c69.png)
 ![image](https://user-images.githubusercontent.com/1063617/158073219-1d596d8d-4614-4f1a-8274-6140ea3569b3.png)
+
+### Single 2: Develop with Sitecore 10
+#### Track 1: Familiarize Yourself with Sitecore 10 Containers
+#### Advantages of Sitecore with Containers
+* First, as a Developer, you can develop the Sitecore product with containers regardless of the production environment's deployment method.
+* Sitecore provides the specifications and support for running containers in both development with Docker and production with Kubernetes
+* You can still containerize your development environment and retain your existing development artifacts for production deployment.
+* You won't need to install Sitecore locally on your development workstation
+* You can isolate customer instances and dependencies so you can shift easily and efficiently between customer projects
+* You can avoid using the Sitecore Install Framework (SIF) by utilizing the base images provided with the Docker Compose files from Sitecore
+* Simplicity of onboarding new Developers to a team or project. You will be able to clone your code repository and run a docker-compose up
+
+
+#### Requirements to Get Started on Containers
+* First, you need to be familiar with container-based computing.
+* Next, you will need to install Docker Desktop for Windows
+* Finally, you need to be aware that the Sitecore environment in Windows containers can utilize a great deal of memory on your Developer workstation. While 16 GB is the specified minimum,  we recommend 32 GB of memory for optimal settings
+
+#### Track 2: Discover the Sitecore Content Serialization Feature
+#### Why Content Serialization?
+#### Sitecore Content Serialization
+The Sitecore Content Serialization tool brings together the best of TDS and Unicorn alike. It has two parts: the Sitecore Command Line Interface (CLI), and the Sitecore for Visual Studio plug-in.
+
+#### Track 3: Explore the ASP.NET Core Rendering SDK.
+#### Features of the ASP.NET Core Rendering SDK
+* A client API for the Sitecore Layout Service. This API provides classes for invoking the Layout Service. You can utilize the Layout Service Client from a scheduled job or a .NET CLI application.
+* The second feature is the use of tag helpers to render Sitecore placeholders, including mapping to specific component implementations in the ASP.NET Core. Also included are tag helpers for rendering Sitecore fields, which come back in the Layout Services Client response. This helps with specific field types like images, dates, and rich text, helping ensure the fields are rendering properly for the Sitecore Experience Editor.
+* The third helpful feature regards the structures and mechanisms built into the ASP.NET Core SDK for mapping requests to the Layout Service Client.
+* The fourth feature is the inclusion of extensions to the model binding within Microsoft’s ASP.NET Core. This model binding extension takes the Layout Service Client response and maps it to a strongly-typed model
+* The last feature is the integrations enabling the full Sitecore Experience Platform (XP) functionality, including the Experience Editor, analytics, and personalization features. 
+
+#### When to Use the ASP.NET Core Rendering SDK
+* The ASP.NET Core Rendering SDK is for Developers who do not require the rich front-end or Single Page App (SPA)
+* The ASP.NET Core Rendering SDK is also a good fit for those who have used Sitecore MVC in the past without SXA
+* Additionally, if you or a customer has an existing ASP.NET Core site or application, you can utilize the ASP.NET Core Rendering SDK to add Sitecore functionality, content, or routes to the existing site or application.
+
+#### Advantages of the ASP.NET Core Rendering SDK
+* One of the major advantages of headless rendering is that you will be building outside of Sitecore, so you are no longer building code into the Sitecore instance
+* You will no longer have to recycle the entire application pool when you build a new rendering, so your development cycles will be faster
+* It is advantageous to be working with the newest technologies on the market; ASP.NET Core is faster, more modular, and more modern than its .NET Framework predecessor, giving you an edge in development and deployment.
+
+#### KNOWLEDGE CHECK
 
 
 
