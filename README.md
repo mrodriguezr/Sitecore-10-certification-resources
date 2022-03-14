@@ -9,8 +9,6 @@
 * [Sitecore Knowledge Base](https://support.sitecore.com/kb) - Sitecore Knowledge Base
 * [Sitecore Stack Exchange](https://sitecore.stackexchange.com/) - Sitecore Stack Exchange
 * [Sitecore Slack Chanel](https://sitecore.chat/) - Sitecore Slack Chanel
-* [XX]() - XXX
-
 
 
 ## Exam recomendations
@@ -123,7 +121,27 @@ The Sitecore Content Serialization tool brings together the best of TDS and Unic
 * It is advantageous to be working with the newest technologies on the market; ASP.NET Core is faster, more modular, and more modern than its .NET Framework predecessor, giving you an edge in development and deployment.
 
 #### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/158095376-c80f2043-537c-4e4a-8bc3-6e787ff58aa6.png)
+![image](https://user-images.githubusercontent.com/1063617/158095408-dccd3639-e861-418c-a423-be5dfe2967b0.png)
+![image](https://user-images.githubusercontent.com/1063617/158095538-791372cc-85aa-460a-92c9-b4f3104797a5.png)
+![image](https://user-images.githubusercontent.com/1063617/158095664-cf1035f3-3e87-4a4f-a48f-684d5c41e4d8.png)
 
+### Single 3: Use the Getting Started Template to Set Up a Sitecore 10 Environment
+#### Track 1: Prepare the Prerequisites.
+* .NET Core 3.1 SDK
+* .NET Framework 4.8 SDK
+* Visual Studio 2019
+* Docker for Windows
+* PowerShell 5.1
+
+
+#### Track 2: Install the getting started template
+
+#### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/158099358-a854569d-7197-4b5f-8e31-0d329f608b0b.png)
+![image](https://user-images.githubusercontent.com/1063617/158099402-c50ac834-58ca-47c4-889b-ce245c0463f3.png)
+![image](https://user-images.githubusercontent.com/1063617/158099483-c2b3381a-3b76-4d41-851e-23cdaf59de03.png)
+![image](https://user-images.githubusercontent.com/1063617/158099540-b4f8063b-36f9-4f29-b897-318d1b9d2709.png)
 
 
 ### Introduction to Sitecore Content Serialization 10 (3h)
