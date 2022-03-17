@@ -154,6 +154,42 @@ Sitecore Content Serialization allows you to easily put items into source contro
 #### Track 2: Configure Sitecore Command Line Interface (CLI)
 #### Track 3: Set up Sitecore for Visual Studio
 
+### Single 2: Utilize Sitecore Content Serialization
+#### Track 1: Create Modules for Serialization with Text Editor and SVS
+* The Sitecore.json file is used to control how Sitecore serialization behaves. The modules section of this file is used by Sitecore serialization to locate all modules in your solution.
+* src\TestModule\TestModule.module.json
+* The .module.json requires a namespace value
+
+#### Track 2: Configure Item Includes Using Text Editor and SVS.
+##### Allowed Include Properties 
+![image](https://user-images.githubusercontent.com/1063617/158726373-6f5e8fcf-b5d1-4226-a28b-0967539f3799.png)
+
+#### Track 3: Edit Rules Using Text Editor and SVS
+##### Rule Properties
+![image](https://user-images.githubusercontent.com/1063617/158727783-2c9fe3c4-5dca-45c0-a768-147ea21805ef.png)
+
+#### Track 4: Serialize Items
+* To serialize items using Sitecore CLI, you must use the dotnet sitecore ser pull command, which will pull all of the Sitecore items from your content tree
+* Note: The use of the -w or 'what-if' command helps you to see what the serialization of your module would look like without actually performing it.
+
+Now, to run serialization using the Sitecore for Visual Studio plugin, follow the steps below:
+
+* Step 1: In the Sitecore Module Explorer, right-click on Sitecore Configuration Root.
+* Step 2: Click Pull items.
+
+#### Track 5: Automation of Item Packaging and Deployment.
+##### Task 1: Create Package Using Sitecore for Visual Studio
+* Add a new Sitecore for Visual Studio Project project
+
+Create a Package Using Sitecore CLI (Theoretical)
+* Step 1: Go to your project folder where your sitecore.json is located. 
+* Step 2: To create the package, run the following command: 
+> dotnet sitecore ser pkg create -o <name> 
+
+##### Task 2: Configure your Environment for Client Credentials Authentication 
+##### Task 3: Install a Sitecore Content Serialization Package in Your Delivery Pipeline
+
+
 
 ### Get Started with Containers for Sitecore (4h)
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
