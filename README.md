@@ -178,8 +178,19 @@ Now, to run serialization using the Sitecore for Visual Studio plugin, follow th
 * Step 2: Click Pull items.
 
 #### Track 5: Automation of Item Packaging and Deployment.
+Packages contain everything a Developer needs to deploy to production. To successfully automate item packaging and deployment you will complete the following tasks:
+* Create a package using either Sitecore for Visual Studio or Sitecore CLI, 
+* Configure your environment for client credentials authentication, and 
+* Install the package into your delivery pipeline.
+
 ##### Task 1: Create Package Using Sitecore for Visual Studio
-* Add a new Sitecore for Visual Studio Project project
+* Add a new buid Sitecore for Visual Studio Project project. MyProject.build 
+* Edit the Build Project
+** Go to properties
+** Select the Build Serialized Items Package
+** In the Package Modules section, select Include All Modules
+** Save the build project, and then build to create the package.
+
 
 Create a Package Using Sitecore CLI (Theoretical)
 * Step 1: Go to your project folder where your sitecore.json is located. 
@@ -187,10 +198,133 @@ Create a Package Using Sitecore CLI (Theoretical)
 > dotnet sitecore ser pkg create -o <name> 
 
 ##### Task 2: Configure your Environment for Client Credentials Authentication 
+You will now configure your environment for client credentials authentication. To enable non-interactive client logins using client credential flows with your Sitecore instance, you must add additional configurations to your Identity Server and Content Management instances. 
+
+###### Create new configuration patch for Sitecore Identity Server.
+* Step 1: Create a file named Sitecore.IdentityServer.MyProject.xml in the \docker\build\id folder
+* Step 2: Copy and paste the following code into the file:
+ 
+ ```
+ <?xml version="1.0" encoding="utf-8"?>
+<!--
+    From https://doc.sitecore.com/developers/100/developer-tools/en/configure-a-non-interactive-client-login.html
+-->
+<Settings>
+  <Sitecore>
+    <IdentityServer>
+      <Clients>
+        <!--
+          Used to authenticate servers with client id and client secret.
+          The name of this XML element is arbitrary, but in this example it must
+          match the path used in the docker-compose.override.xml to set the ClientSecret1
+          value.
+        -->
+        <MyProjectDeployment>
+            <!--
+              The ClientId and ClientName are arbitrary, but the ClientId must
+              match the value we pass into the client-id argument when using the Sitecore CLI,
+              and the client_id value in our claim mapping patch for the CM role.
+            -->
+            <ClientId>MyProjectDeployment</ClientId>
+            <ClientName>MyProjectDeployment</ClientName>
+            <AccessTokenType>0</AccessTokenType>
+            <AccessTokenLifetimeInSeconds>3600</AccessTokenLifetimeInSeconds>
+            <IdentityTokenLifetimeInSeconds>3600</IdentityTokenLifetimeInSeconds>
+            <RequireClientSecret>true</RequireClientSecret>
+            <AllowOfflineAccess>false</AllowOfflineAccess>
+            <AllowedGrantTypes>
+                <!--
+                    client_credentials authenticates with client ID and client secret
+                    which is good for CI, tools, etc. However, it's not tied to a USER,
+                    it's tied to a client ID.
+                -->
+                <AllowedGrantType1>client_credentials</AllowedGrantType1>
+            </AllowedGrantTypes>
+            <ClientSecrets>
+                <!-- Configured via environment variable. -->
+                <ClientSecret1></ClientSecret1>
+            </ClientSecrets>
+            <AllowedScopes>
+                <!-- this is required even if not a 'user' for Sitecore to like us -->
+                <AllowedScope1>sitecore.profile.api</AllowedScope1>
+            </AllowedScopes>
+        </MyProjectDeployment>
+      </Clients>
+    </IdentityServer>
+  </Sitecore>
+</Settings>
+ ```
+ This patch defines a new login client for automated login using client credentials. The client secret value is intentionally left blank, so it can be configured via the environment variable.
+ 
+###### Add directives to Identity Server Dockerfile.
+The second task is to add directives to your Identity Server Dockerfile. You can do so by following the steps below:
+
+* Step 1: Add directives to your Identity Server Dockerfile (docker/build/id/Dockerfile) by pasting the following configuration patch:
+```
+ WORKDIR c:\identity
+ COPY Sitecore.IdentityServer.MyProject.xml .\Config
+```
+###### Add environment variable to id services.
+ Your third task is to add an environment variable to the id services in your docker-compose.override.yml file which configures the client secret. This uses ASP.NET Core's ability to configure via environment variables to set the client secret value to an environment variable on the host, MY_PROJECT_DEPLOYMENT SECRET. Follow the steps below to add the new environment variable to id services:
+
+* Step 1: Paste the following code in your docker-compose.override.yml file as a new environment variable to the id service. 
+```
+Sitecore_Sitecore__IdentityServer__Clients__MyProjectDeployment__ClientSecrets__ClientSecret1: ${MYPROJECT_DEPLOYMENT_SECRET}
+```
+###### Add a value to MY_PROJECT_DEPLOYMENT_SECRET variable.
+* Step 1: In your Docker Compose .env (environment variable configuration), paste the code below to add a value for MYPROJECT_DEPLOYMENT_SECRET:
+```
+# Client Credentials Auth
+MYPROJECT_DEPLOYMENT_SECRET=TTrp2QUBhCCEa8W_zKydu7hDxklilBnLTY2Rb
+```
+
+###### Add configuration patch to Platform web project.
+* Step 1: Open your solution in Visual Studio. In the App_Config\Include\ folder of the Platform web project, create a new configuration patch MyProjectDeployment.ClaimMapping.config. 
+* Step 2: Paste the contents found below.
+```
+ <?xml version="1.0" encoding="utf-8"?>
+ <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/" xmlns:set="http://www.sitecore.net/xmlconfig/set/">
+   <sitecore role:require="Standalone or ContentManagement">
+     <federatedAuthentication>
+       <identityProviders>
+         <identityProvider id="SitecoreIdentityServer" type="Sitecore.Owin.Authentication.IdentityServer.IdentityServerProvider, Sitecore.Owin.Authentication.IdentityServer" resolve="true">
+           <transformations hint="list:AddTransformation">
+             <transformation name="grant admin rights for MyProjectDeployment" type="Sitecore.Owin.Authentication.Services.DefaultTransformation, Sitecore.Owin.Authentication">
+               <sources hint="raw:AddSource">
+                 <!-- This needs to match the ClientId in the Identity Server configuration. -->
+                 <claim name="client_id" value="MyProjectDeployment" />
+               </sources>
+               <targets hint="raw:AddTarget">
+                 <claim name="name" value="sitecore\admin" />
+                 <claim name="http://www.sitecore.net/identity/claims/isAdmin" value="true" />
+               </targets>
+               <keepSource>true</keepSource>
+             </transformation>
+           </transformations>
+         </identityProvider>
+       </identityProviders>
+     </federatedAuthentication>
+   </sitecore>
+ </configuration>
+```
+This configuration patch adds a claim mapping to your CM role, which indicates that users who have logged in via the MyProjectDeployment client ID should be granted Admin rights.
+
+###### Launch your environment.
+* Step 1: Either run .\up.ps1, or docker-compose build, or docker-compose up -d if you have previously launched the environment.
+
+ 
 ##### Task 3: Install a Sitecore Content Serialization Package in Your Delivery Pipeline
+To install the package you created into your delivery pipeline, run the following command:
+```
+ dotnet sitecore ser package install -f ​src\MyProject.build\bin\Debug\MyProject.build.itempackage 
+```
+#### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/160213509-5c9980f7-e10b-4115-b622-0c9a63fd010b.png)
+![image](https://user-images.githubusercontent.com/1063617/160213553-3073d7ed-2c83-4718-9a57-46c4897b5da0.png)
+![image](https://user-images.githubusercontent.com/1063617/160213707-ce581f98-a0cc-4ff2-b561-45f27728b8a6.png)
+![image](https://user-images.githubusercontent.com/1063617/160213776-239bc5a3-f932-466f-9a6d-d51bf22c845d.png)
 
-
-
+ 
 ### Get Started with Containers for Sitecore (4h)
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
 ### Developing with the ASP.NET Core Rendering SDK(2h 30m)
