@@ -326,6 +326,92 @@ To install the package you created into your delivery pipeline, run the followin
 
  
 ### Get Started with Containers for Sitecore (4h)
+ #### Single 1: Prepare to Run Sitecore Using Docker
+ #### Track 1: Check the System Prerequisites.
+ ##### Review Software Prerequisites Guide
+ * Windows 10 Professional or Enterprise version 1809 (2019 LTSC) or later: The first software prerequisite is Windows 10 version 1809 or later. In order to enable process isolation, version 1909 is recommended. 
+ * Hyper-V: The second software prerequisite is to enable Hyper-V, which allows you to run multiple operating systems as VM's on Windows. 
+ * Docker Desktop for Windows
+ 
+ * Docker Compose:  Docker Compose is included as part of the Docker Desktop installation. Sitecore for Docker Compose deployments require two text files to deploy the containers: 
+- docker-compose.yaml is a Docker Compose configuration file that contains information about the different containers and configuration of each Sitecore role.
+- .env is an environment variable configuration file that stores the configuration information for the environment you want to deploy. You can edit this file outside the main Docker Compose configuration. You can see a list of all of the .env variables needed by clicking the image below. 
+ ![image](https://user-images.githubusercontent.com/1063617/160492080-b9a59bc2-e3ea-404d-8306-7c50b94e2fc6.png)
+ * Visual Studio and/or Visual Studio Code
+ 
+ 
+ ##### Confirm Hardware Settings
+* Running Hyper-V
+* Sitecore development
+** 32GB Ram 
+** CPU Quad Core or higher
+** 40GB free disc space (SSD disks strongly recommended)
+* Networking: To verify your networking access, ensure that the TCP ports that are used by your containers do not have any other process accessing them
+![image](https://user-images.githubusercontent.com/1063617/160492330-c4a09f8e-031c-4655-bcda-3241906c4c64.png)
+
+ ##### Verify Configuration Files
+* Sitecore license file: Your Sitecore license gives you access to the Sitecore environment for development
+* Environment variable (.env) file: The environment variable file (or .env) is the mechanism used by Sitecore to pass its configuration settings into containers. The environment variables for Docker Compose are stored in the .env file, which enables automatic loading of the variables during startup using Docker Compose
+
+#### Track 2: Prepare to Launch Your Sitecore Environment.
+##### Clone the Docker Examples Repository
+ Repo https://github.com/Sitecore/docker-examples
+
+ ##### Docker Compose Files
+ * docker-compose.yml: this Compose file is used by the docker-compose command. It contains information about the containers (referred to as services) and their configuration.
+* .env file: This environment file contains values that represent the default values for any environment variables referenced in the Compose file or used to configure Compose. 
+ 
+ ##### Install SitecoreDockerTools
+To install SitecoreDockerTools via script, run the code below:
+```
+ Register-PSRepository -Name "SitecoreGallery" -SourceLocation "https://sitecore.myget.org/F/sc-powershell/api/v2"
+ Install-Module SitecoreDockerTools
+```
+##### Populate Environment File
+* SITECORE_ADMIN_PASSWORD: Set your Sitecore Admin password
+* SQL_SA_PASSWORD: Set your SQL Admin password
+* TELERIK_ENCRYPTION_KEY:  Run the following PowerShell script as an Administrator from the same folder as your environment file C:\sitecore\docker-examples\getting-started to set the TELERIK_ENCRYPTION_KEY
+ ```
+ Import-Module SitecoreDockerTools
+ Set-DockerComposeEnvFileVariable "TELERIK_ENCRYPTION_KEY" -Value (Get-SitecoreRandomString 128)
+ ```
+* SITECORE_IDSECRET, SITECORE_ID_CERTIFICATE and SITECORE_ID_CERTIFICATE_PASSWORD: Run the following PowerShell script to populate the variables required for Identity server.
+ ```
+Import-Module SitecoreDockerTools
+Set-DockerComposeEnvFileVariable "SITECORE_IDSECRET" -Value (Get-SitecoreRandomString 64 -DisallowSpecial)
+$idCertPassword = Get-SitecoreRandomString 12 -DisallowSpecial
+Set-DockerComposeEnvFileVariable "SITECORE_ID_CERTIFICATE" -Value (Get-SitecoreCertificateAsBase64String -DnsName "localhost" -Password (ConvertTo-SecureString -String $idCertPassword -Force -AsPlainText))
+Set-DockerComposeEnvFileVariable "SITECORE_ID_CERTIFICATE_PASSWORD" -Value $idCertPassword
+ ```
+#### Track 3: Populate Sitecore License Variable.
+##### Identify Supported Sitecore Topologies
+ Sitecore XP 10.0 has three specific topologies designed for containers: XP Workstation, XM Server, and XP Server.
+ 
+ ###### XP Workstation
+ The first topology is the Sitecore Experience Platform (XP) workstation, which is designed to be used as a Developer workstation for Docker (see Figure 2). As a Developer, you want to use this topology if you are looking to reduce memory overhead, download size, or complexity, and to improve startup or shutdown time. The Sitecore Roles for XP Workstation Guide contains a list of the roles that are supported by the XP Workstation.
+![image](https://user-images.githubusercontent.com/1063617/160496868-270b8d64-6caa-4cd2-8e85-cd776805f6c1.png)
+
+ ###### XX Server
+ The second topology is the Sitecore Experience Manager (XM) Server, which is designed for use in production and non-production environments for Docker (see Figure 3). You'll want to use this topology if you are looking to reduce deployment time and lower the resource overhead in non-production environments. This is accomplished by removing the Content Delivery role from the Docker Compose configuration. The Sitecore Roles for XM Server Guide consists of a list of roles that are supported by the XM Server.
+ ![image](https://user-images.githubusercontent.com/1063617/160496848-380fb860-f6ab-4edb-90c0-0c6e36a71a53.png)
+
+ ###### XP Server
+The third topology is the Sitecore Experience (XP) Server. The Sitecore Experience Server is designed for production and non-production environments for Docker (see Figure 4). As a Developer, you'll want to use this topology when you want to mimic the exact configuration that is used in production.
+ ![image](https://user-images.githubusercontent.com/1063617/160497006-766c02a3-4406-433b-a73d-670e1a7a331d.png)
+
+ ##### Convert the License File
+Run the following PowerShell script, replacing the –Path with the location of your Sitecore license file.
+ ```
+Import-Module SitecoreDockerTools
+Set-DockerComposeEnvFileVariable "SITECORE_LICENSE" -Value (ConvertTo-CompressedBase64String -Path "C:\License\license.xml")
+ ```
+##### Mount your File
+The second option of converting your license—  mounting the license file—is an alternative to using the .env file. 
+ 
+ To use a mounted license file, you must populate the SITECORE_LICENSE_LOCATION environment variable on each service with a volume-mounted path containing your Sitecore license key. In Figure 6, we have also used an environment variable, HOST_LICENSE_FOLDER, to configure the path on the container host which contains our license.xml.
+ 
+ There is a significant difference when mounting the license file for xConnect roles as opposed to all other services. To mount the license, you still need to populate SITECORE_LICENSE_LOCATION, but it should point to the volume-mounted path containing the license.xml rather than to the file itself. In Figure 7, we use the same HOST_LICENSE_FOLDER environment variable, but have adjusted SITECORE_LICENSE_LOCATION to be the folder path. For an example of how to mount the file as a volume file, you can also refer to the Sitecore Docker Examples on GitHub.
+
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
 ### Developing with the ASP.NET Core Rendering SDK(2h 30m)
 
