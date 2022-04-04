@@ -412,6 +412,22 @@ The second option of converting your license—  mounting the license file—is 
  
  There is a significant difference when mounting the license file for xConnect roles as opposed to all other services. To mount the license, you still need to populate SITECORE_LICENSE_LOCATION, but it should point to the volume-mounted path containing the license.xml rather than to the file itself. In Figure 7, we use the same HOST_LICENSE_FOLDER environment variable, but have adjusted SITECORE_LICENSE_LOCATION to be the folder path. For an example of how to mount the file as a volume file, you can also refer to the Sitecore Docker Examples on GitHub.
 
+#### Track 4: Configure HTTPS Certificates and Windows Hosts File.
+To configure HTTPS certificates and Windows hosts file, you should first examine the Traefik folder, then generate the HTTPS certificates, and finally add the hostnames to your Windows hosts file.
+
+ ##### Install mkcert with Windows
+
+* Step 1: Download the latest Windows executable (e.g. mkcert-v1.4.1-windows-amd64.exe)
+* Step 2: Rename the file to mkcert.exe
+* Step 3: Move the file to a directory that is in one of your PATH environment variables. This will allow you to run mkcert without a full path specified.
+* Step 4: Open a command prompt in administrator mode and run the following command: 
+```
+ mkcert -install
+```
+
+
+
+ 
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
 ### Developing with the ASP.NET Core Rendering SDK(2h 30m)
 
