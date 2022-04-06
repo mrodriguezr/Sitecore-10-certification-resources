@@ -424,13 +424,50 @@ To configure HTTPS certificates and Windows hosts file, you should first examine
 ```
  mkcert -install
 ```
+ 
+##### Install mkcert with Windows
 
-
-
+* Step 1: Open up your hosts file (see Figure 4) (e.g. C:\Windows\System32\drivers\etc\hosts) 
+* Step 2: Add the following entries.
+```
+127.0.0.1   xp0cm.localhost
+127.0.0.1   xp0id.localhost
+```
  
 ### Introduction to the Sitecore ASP.NET Core Rendering SDK (2h 45m)
 ### Developing with the ASP.NET Core Rendering SDK(2h 30m)
 
+#### Track 5: Launch Your Sitecore Environment in Docker. 
+##### Start Sitecore
+* Step 1: In the same folder as your Compose file, run `docker-compose up -d`
+
+ This will do a few things:
+* Download all required images from the Sitecore Container Registry,
+* Create a default network to use,
+* Create a container for each configured service, and
+* Start the containers with their configured ENTRYPOINTS.
+
+ ##### Access Sitecore
+* Browse to https://xp0cm.localhost and you should see the Sitecore default website.
+
+ You can also access additional containers:
+* Sitecore Content Management (cm) = https://xp0cm.localhost
+* Sitecore xConnect Server (xconnect) = http://localhost:8081
+* Sitecore Identity Server (id) = https://xp0id.localhost
+* Apache Solr (solr) = http://localhost:8984 
+* Microsoft SQL Server (mssql) = localhost,14330 
+
+
+#### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/162045343-849a519a-db98-4852-b6d1-a8f9835846fc.png)
+![image](https://user-images.githubusercontent.com/1063617/162045527-4ebc0303-eb7a-4d16-9b68-6ec9f30f3db0.png)
+![image](https://user-images.githubusercontent.com/1063617/162045783-500358ea-b0b3-4017-bb47-5a20082e704a.png)
+
+ #### Extended Track: Launch the Sitecore Container Support Package.
+![image](https://user-images.githubusercontent.com/1063617/162082909-69a1c4d4-3800-4cfa-b123-50a694491e0b.png)
+
+
+ 
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
 * [Quiz 2](https://quizlet.com/207158406/sitecore-flash-cards/) 
