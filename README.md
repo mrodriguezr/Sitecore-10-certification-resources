@@ -466,7 +466,12 @@ To configure HTTPS certificates and Windows hosts file, you should first examine
  #### Extended Track: Launch the Sitecore Container Support Package.
 ![image](https://user-images.githubusercontent.com/1063617/162082909-69a1c4d4-3800-4cfa-b123-50a694491e0b.png)
 
-#### Additional Docker Commands
+### Extended Track: Additional Docker Commands.
+ ![image](https://user-images.githubusercontent.com/1063617/162263459-13ef0de8-7831-4364-b700-eb087b4cb15b.png)
+![image](https://user-images.githubusercontent.com/1063617/162263690-cb774916-c295-4754-b1f1-62967dcc61c2.png)
+
+
+
 
  
 ## Quiz
