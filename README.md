@@ -470,8 +470,35 @@ To configure HTTPS certificates and Windows hosts file, you should first examine
  ![image](https://user-images.githubusercontent.com/1063617/162263459-13ef0de8-7831-4364-b700-eb087b4cb15b.png)
 ![image](https://user-images.githubusercontent.com/1063617/162263690-cb774916-c295-4754-b1f1-62967dcc61c2.png)
 
+### Single 2: Examine How to Create Custom Sitecore Container Images
+#### TRACK 1: BUILD YOUR SITECORE SOLUTION USING DOCKER
 
+ ##### Run the init.ps1 Script 
+* Step 1: Navigate to C:\Sitecore\docker-examples\custom-images.
+* Step 2: Run the init.ps1 script below (see Figure 1), replacing the license path with the path of your Sitecore license.
+ ```
+ .\init.ps1 -LicenseXmlPath C:\License\license.xml
+ ```
+##### Explore Dockerfile
+The first file you will look at is the Dockerfile. Building your application directly in a Dockerfile like this has advantages over a more traditional build, including:
 
+* Portability—The entire build process is "containerized." Build agents and local environments do not need to have anything installed other than Docker.
+* Control over the build environment—The solution owns which build dependencies (and which versions) are used.
+* Efficiency—Even if build steps are very verbose, use of Docker's build cache optimizes rebuilds.
+* Plays nice in Docker ecosystem—Builds can be triggered using Docker commands. Retrieving build artifacts for use in other images is simple with Dockerfile FROM instructions.
+ 
+##### Examine Build Command Configured in Docker Compose
+##### Build the Solution Image
+* Step 1: Open a PowerShell prompt and run the following command from C:\sitecore\docker-examples\custom-images.
+```docker-compose build solution```
+* Step 2: Once the build process has finished, you can confirm the image was created by listing all of the Docker images using Docker images. You have now built your solution image.
+
+ 
+#### TRACK 2: UNDERSTAND THE STRUCTURE OF A CUSTOM SITECORE IMAGE
+#### TRACK 3: EXECUTE CONFIGURATION TRANSFORMS
+#### TRACK 4: EXPLORE HOW TO ADD SITECORE MODULES
+#### TRACK 5: DEPLOY SITECORE ITEMS INTO CONTAINERS
+#### EXTENDED TRACKS FOR THE SINGLE
 
  
 ## Quiz
