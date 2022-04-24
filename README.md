@@ -495,6 +495,24 @@ The first file you will look at is the Dockerfile. Building your application dir
 
  
 #### TRACK 2: UNDERSTAND THE STRUCTURE OF A CUSTOM SITECORE IMAGE
+![image](https://user-images.githubusercontent.com/1063617/164999980-2668bb14-39bf-45bf-922c-734113cac907.png)
+ 
+ To understand the structure of a custom Sitecore image, you will:
+
+##### Explore the Docker Build Folder
+ The docker/build folder contains files and folders to support Docker development and contains each of the Sitecore service topologies.
+ At a minimum, the service folders contain a Sitecore runtime Dockerfile, which is used as the Docker build context for the corresponding service in the Docker Compose file.
+ 
+ ###### Sitecore runtime Dockerfiles
+ Within each topology in the docker/build folder, you will find a Dockerfile. You'll want to create a Sitecore runtime Dockerfile for each container that makes up your Sitecore topology (see Figure 3), even if you do not have any customizations at present. This is recommended so that there is a dedicated layer for you to make hotfixes or future customizations and you have a resulting image that you "own" which can be named, tagged, labeled, and stored as appropriate for your solution
+
+##### Examine a service Dockerfile
+ 
+##### View the configurations in Docker Compose, and
+##### Build the Sitecore image(s)
+
+ 
+ 
 #### TRACK 3: EXECUTE CONFIGURATION TRANSFORMS
 #### TRACK 4: EXPLORE HOW TO ADD SITECORE MODULES
 #### TRACK 5: DEPLOY SITECORE ITEMS INTO CONTAINERS
