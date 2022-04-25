@@ -576,19 +576,63 @@ In both cases, when the up command is called, Docker will recreate only the cm a
  ```
  docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml down 
  ```
-
-
  
 #### TRACK 4: EXPLORE HOW TO ADD SITECORE MODULES
-#### TRACK 5: DEPLOY SITECORE ITEMS INTO CONTAINERS
-#### EXTENDED TRACKS FOR THE SINGLE
+ ##### Understanding Sitecore module asset images
+ Sitecore provides officially supported module asset images that contain the required files and scripts for you to install a Sitecore module when building your custom Sitecore images. 
+ Each module asset image contains resources adhering to the following file structure.
+* C:\module\[role]\content—content to overlay base Sitecore images
+* C:\module\db—dacpac files with changes to databases required by the module
+* C:\module\solr—files used to deploy Solr cores required for the module
+* C:\module\tools—additional tools and scripts to be executed during Docker image build process
+ 
+ ##### Viewing Dockerfile instructions
+ * First, in the Sitecore runtime Dockerfile for the CM role (C:\sitecore\docker-examples\custom-images\docker\build\cm\Dockerfile), you can see the module asset images for SPE and SXA brought in at the start with ARGs (see Figure 1) and then initiated as named build stages SPE and SXA to be used later on.
+ * You will also see the required CM Dockerfile instructions are added for both SPE and SXA, just after the WORKDIR instruction.
+ 
+ ##### Exploring Docker Compose file
+ Now that you've viewed the Dockerfiles for the three roles, you can see how the docker-compose.yml file configures the SPE_IMAGE and SXA_Image values. 
+open the docker-compose.override.yml file at C:\sitecore\docker-examples\custom-images\docker-compose.override.yml. Next, notice that the SPE_IMAGE and SXA_IMAGE values are configured to use the Docker image repositories for each module according to the Sitecore module reference
 
+ ##### Running Docker Examples
+ ```
+ docker-compose up -d
+ ```
+ 
+#### TRACK 5: DEPLOY SITECORE ITEMS INTO CONTAINERS
+ ##### Review Sitecore Item Deployment
+ For production deployment, you can create Sitecore Content Serialization packages to support a continuous integration pipeline. Sitecore Content Serialization (SCS) packages (file extension .itempackage) contain specified modules and all their serialized items.
+ 
+ ##### Explore Serialization Tools
+ With the release of Sitecore 10 came two new tools that support content serialization—the Sitecore Command Line Interface (CLI) and Sitecore for Visual Studio.
+ 
+ ###### Sitecore Command Line Interface (CLI)
+ The Sitecore CLI includes the ability to log in to a remote Sitecore instance, publish content, and serialize items—all from the command line. You can also create item packages which contain everything a Developer needs to deploy to production. Once you create an item package, you can use the Sitecore CLI to install it into your delivery pipeline.
+ 
+ ###### Sitecore for Visual Studio
+ Similar to Sitecore CLI, Sitecore for Visual Studio gives you a graphical way to interact with your Sitecore instance
+ 
+ ###### Additional Serialization Tools
+* Sitecore TDS
+* Unicorn
+
+ 
+#### KNOWLEDGE CHECK
+ ![image](https://user-images.githubusercontent.com/1063617/165105231-9460f107-acf8-479e-94a7-0c416107801c.png)
+ ![image](https://user-images.githubusercontent.com/1063617/165105399-fca3f841-bcdf-42eb-83ac-370357df62bf.png)
+ ![image](https://user-images.githubusercontent.com/1063617/165105611-952877fb-7547-4b9a-aa9e-d15cf539f3d9.png)
+ ![image](https://user-images.githubusercontent.com/1063617/165105694-974ee953-b063-4020-a9b3-9f6fe74a5bfb.png)
+
+### Single 3: Develop and Debug in a Local Environment
+ #### TRACK 1: 
+ #### TRACK 2: 
+ #### TRACK 3: 
+ #### TRACK 4: 
+ 
  
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
 * [Quiz 2](https://quizlet.com/207158406/sitecore-flash-cards/) 
-
-
 
 ## Exam details
 * Fifty question
