@@ -507,13 +507,78 @@ The first file you will look at is the Dockerfile. Building your application dir
  Within each topology in the docker/build folder, you will find a Dockerfile. You'll want to create a Sitecore runtime Dockerfile for each container that makes up your Sitecore topology (see Figure 3), even if you do not have any customizations at present. This is recommended so that there is a dedicated layer for you to make hotfixes or future customizations and you have a resulting image that you "own" which can be named, tagged, labeled, and stored as appropriate for your solution
 
 ##### Examine a service Dockerfile
+ This Dockerfile is an example of using the build artifacts from your solution image.
  
-##### View the configurations in Docker Compose, and
+##### View the configurations in Docker Compose
+ Similar to the solution image, the build for custom Sitecore runtime images is also configured in the docker-compose.override.yml file. Recall that the docker-compose.yml file is the out-of-the-box Docker Compose file that comes with Sitecore, and the docker-compose.override.yml extends the main file with overrides and extensions necessary for custom Sitecore image build and development purposes. 
+ 
+ Some important things to note in CM docker compose overwrite configuration:
+* Variable values (e.g. ${SITECORE_DOCKER_REGISTRY}) can be sourced from either the environment file (.env), system environment variables on local development machines, or secrets on your build server.
+* The image name uses a "-xp0-cm" suffix. With the default variable values, the tagged version will be docker-examples-xp0-cm:latest
+* The build context is set to ./docker/build/cm. Docker Compose will use the Sitecore runtime Dockerfile located here (see Figure 7).
+* depends_on is set to the solution service to ensure it is built first.
+ 
 ##### Build the Sitecore image(s)
-
- 
+ ```
+ docker-compose build
+ ```
+ This will initiate the build process for the solution image and then all custom Sitecore runtime images defined. The custom Sitecore runtime images will be created when complete.
+You can confirm the images were created by listing all Docker images by running `docker images`.
  
 #### TRACK 3: EXECUTE CONFIGURATION TRANSFORMS
+ To execute configuration transforms, you will need to:
+
+##### Ensure custom image is prepared
+
+Execute:
+ ```
+ .\init.ps1 -LicenseXmlPath C:\License\license.xml 
+
+ ```
+ Now that your Docker Examples has been prepared, you can examine the two Docker Examples transform files. 
+
+
+##### Examine the Docker Examples transform files
+ * Solution Transform: \src\DockerExamples.Website\Web.config.xdt
+ * Role Transform: \docker\build\cm\transforms\Web.config.xdt 
+
+##### Understand solution transforms
+The solution Dockerfile copies the xdt from the builder stage to the final image with the following structure: \artifacts\transforms then the service (cm, id, etc.) executes Invoke-XdtTransform.ps1 script 
+
+##### Understand role transforms
+ Configuration transforms that apply only to a specific Sitecore role can be stored inside that role's dedicated docker\build folder. 
+ 
+##### Run Docker Examples
+ * Step 1: Open a PowerShell prompt and navigate to the custom-images folder.  
+ * Step 2: Run Docker Examples using the Docker Compose up command 
+ ```
+ docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml up -d 
+ ```
+ * Step 3: Access your Sitecore Experience Management (XM1) containers with the following:
+ - Sitecore Content Management (cm): https://cm.dockerexamples.localhost 
+ - Sitecore Content Delivery (cd): https://cd.dockerexamples.localhost 
+ 
+ * Step 4: Once the instance is up and running, use your browser's Developer tools to inspect the http headers.  
+
+##### Apply updates to running containers.
+ * Step 1: Change the solution transform value to "My transform". 
+ * Step 2: Since an image build is required for config transform changes to take effect, you will need to run the following command to see the change applied in the running containers. 
+ ```
+ docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml up --build -d 
+ ```
+ * Step 3: You can also be more selective, building only the affected containers. 
+ ```
+ docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml build solution cm cd
+ docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml up -d 
+ ```
+ 
+In both cases, when the up command is called, Docker will recreate only the cm and cd containers. The rest of the roles will continue on running. When you're done, stop and remove the containers using the down command. 
+ ```
+ docker-compose -f docker-compose.xm1.yml -f docker-compose.xm1.override.yml down 
+ ```
+
+
+ 
 #### TRACK 4: EXPLORE HOW TO ADD SITECORE MODULES
 #### TRACK 5: DEPLOY SITECORE ITEMS INTO CONTAINERS
 #### EXTENDED TRACKS FOR THE SINGLE
