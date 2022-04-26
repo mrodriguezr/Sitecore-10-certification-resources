@@ -624,11 +624,65 @@ open the docker-compose.override.yml file at C:\sitecore\docker-examples\custom-
  ![image](https://user-images.githubusercontent.com/1063617/165105694-974ee953-b063-4020-a9b3-9f6fe74a5bfb.png)
 
 ### Single 3: Develop and Debug in a Local Environment
- #### TRACK 1: 
- #### TRACK 2: 
- #### TRACK 3: 
- #### TRACK 4: 
  
+ #### Track 1: Understand How to Deploy Files into a Running Container.
+In this Track, you will understand how to deploy files into a running container by completing the following tasks:
+
+##### Understanding ENTRYPOINT scripts
+ A Docker ENTRYPOINT provides the command to execute when the container is first run. All Sitecore runtime images have a default ENTRYPOINT configured in the Dockerfile instructions. To see the default ENTRYPOINT for any image you are using, you can 
+ `run docker inspect`
+ 
+ ![image](https://user-images.githubusercontent.com/1063617/165197786-37446369-21ba-47fe-aa28-465c96877a0c.png)
+
+##### Reviewing the docker\deploy folder
+ When developing Sitecore with Docker, recall that there is a docker folder that contains files and folders to support Docker development. Within the docker folder, there is also a deploy folder which contains environment folders that serve as destinations for your code deployment and a source for the development ENTRYPOINT watch script
+ 
+##### Exploring file deployment scenarios
+ DockerDeploy publish profile (pubxml) in the solution publishes the code to docker/deploy folders
+ 
+##### Applying ENTRYPOINTS and deployment to Sitecore runtime images
+ 
+##### Running the Docker Examples
+
+ #### Track 2: Explore Synchronizing Items with a Running Container
+
+ ##### Explore Serialization Tools for Item Sync
+Item sync refers to the pushing and pulling of serialized items in and out of your solution. This process can be accomplished using a number of serialization tools: Sitecore Command Line Interface (CLI), Sitecore Content Serialization plugin, Sitecore TDS, and Unicorn.
+ 
+ 
+ #### Track 3: Examine Debugging in a Local Container
+ ##### Review Debugging Prerequisites
+ * Visual Studio 2019 version 16.5.0 or later
+ * The second prerequisite is that you will also need to ensure that debug symbols have been deployed to the container.
+ 
+ ##### Explore Attach to Process Options
+ In Visual Studio, you have two options for attaching to a process in a container—using the Containers window and using the Debug menu. 
+
+ ###### Option 1: Use the Containers Window
+* Step 1: In the list of running containers, right-click on the one you'd like to debug. 
+* Step 2: Click Attach to Process (see Figure 2). The Attach to Process dialog appears and shows the available processes that are running in the container.
+* Step 3: Select the process (e.g., w3wp.exe) as usual (check Show processes from all users if not visible).
+* Step 4: Click Attach.
+* Step 5: In Visual Studio, set your breakpoint(s).
+* Step 6: Refresh your site to trigger a request to hit the breakpoints you've set in your code.  
+
+###### Option 2: Use the Debug Menu
+* Step 1: From the top Debug menu, select Attach to Process.
+* Step 2: For Connection type, select Docker (Windows Container).
+* Step 3: For Connection target, click the Find button. Running containers will appear in the list. 
+* Step 4: Select the container you’d like to debug. 
+* Step 5: Click OK.
+* Step 6: For Attach to, ensure Managed Code (v4.6, v4.5, v4.0) is selected (this should be the default).
+* Step 7: Select the process that you see in Figure 3 (check Show processes from all users if not visible).
+* Step 8: Click Attach.
+* Step 9: In Visual Studio, set your breakpoint(s).
+ * Step 10: Refresh your site to trigger a request to hit the breakpoints you've set in your code. 
+
+ #### KNOWLEDGE CHECK
+![image](https://user-images.githubusercontent.com/1063617/165211582-da3de691-ec4d-41c9-833d-065136e83925.png)
+![image](https://user-images.githubusercontent.com/1063617/165211654-36096e8d-552e-4d30-aff9-2b4659c1ed80.png)
+![image](https://user-images.githubusercontent.com/1063617/165211699-3f98b350-0ad3-4f0c-8a90-72b4e36be188.png)
+
  
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
