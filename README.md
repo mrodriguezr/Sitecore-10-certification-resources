@@ -684,6 +684,86 @@ Item sync refers to the pushing and pulling of serialized items in and out of yo
 ![image](https://user-images.githubusercontent.com/1063617/165211699-3f98b350-0ad3-4f0c-8a90-72b4e36be188.png)
 
  
+ ## INTRODUCTION TO THE SITECORE ASP.NET CORE RENDERING SDK
+ ### Single 1: Prepare your Workstation for Sitecore Headless Development
+ #### Track 1: Discover the Basics of Headless Rendering
+
+ ##### Sitecore Rendering Host
+The Sitecore ASP.NET Core Rendering SDK introduces the Sitecore Rendering Host that operates outside of the Content Delivery instance and provides you with the tools for faster development iterations. The Sitecore Rendering Host is the front-end section that requests data from the Layout Service (see Figure 2). The Layout Service then retrieves data from the Content Delivery instance and returns the content data in JSON format to the Rendering Host.
+
+ ##### Sitecore Architecture with the Rendering Host
+ Like the JSS Rendering Host, the ASP.NET Core Rendering Host receives an HTTP request from the browser, then forwards the request for Sitecore- specific content data to the Content Delivery instance via the Layout Service. The Layout Service response is the content in JSON format with no HTML or markup attached. The Rendering Host then combines the content data received from the Layout Service with the .NET Core code and returns it as HTML to the browser in response to the HTTP request. 
+ 
+ ##### Benefits of Headless Rendering Host for Sitecore Development
+
+* The first benefit is when working headlessly with the ASP.NET Core Rendering SDK; you are building a small, light-weight, .NET Core application that does not require a full restart of the Sitecore environment to preview the code changes
+ * The second benefit is that you can now run the Rendering Host application directly from Microsoft Visual Studio.
+ * The third benefit of using headless development with Sitecore is the seamless interaction between the .NET Core application and your existing architecture. In practice, you will need to build and maintain the .NET Core application alongside the existing elements in your current environment architecture
+ 
+ #### Track 2: Use the Getting Started Template
+ ##### Prerequisites for Installation
+ * Sitecore license
+ * .NET Core 3.1 SDK
+ * .NET Framework 4.8 SDK
+ * .NET Framework 4.8 SDK
+ * Docker for Windows
+ * PowerShell 5.1
+ 
+##### Installing the Getting Started Template
+Follow the steps
+ 
+  #### KNOWLEDGE CHECK
+ ![image](https://user-images.githubusercontent.com/1063617/166125441-cf9bd93c-2191-4df6-9f76-53f60a957069.png)
+ ![image](https://user-images.githubusercontent.com/1063617/166125463-7ca017aa-eddf-458a-90a1-536079b9fe05.png)
+![image](https://user-images.githubusercontent.com/1063617/166125471-07a16f04-5a90-4273-915c-d37eae87a1cc.png)
+![image](https://user-images.githubusercontent.com/1063617/166125482-23683788-b2b1-4fba-8020-976f61f690e8.png)
+![image](https://user-images.githubusercontent.com/1063617/166125502-7fb4103c-8707-4126-a84b-dd4164be3581.png)
+![image](https://user-images.githubusercontent.com/1063617/166125509-eabf49a8-3c1a-47b9-91df-cfc7fa1575a8.png)
+
+ ### Single 2: Explore Components in ASP.NET Core
+ #### Track 1: Review Site Requirements
+ ##### Layout and Site Requirements
+ #####  Requirement 1: Configure Site Definition
+ The first requirement to check is the configuration of your site definition.
+ ###### Configuration 1: Configure Root Path
+ A single Sitecore instance uses multiple websites to manage content delivery, content management, and many other features. However, by default there is only one published website. This website corresponds to the <site name="website"…/> definition in the Sitecore.config file. When configuring a site definition for your ASP.NET Core rendered site, configure the rootPath as you would for any Sitecore site.
+
+ ###### Configuration 2: Configure Host Names
+When configuring a site definition for your ASP.NET Core rendered site, you must configure the hostName or targetHostName URL as the external-facing host name of your Content Delivery (CD) server. This host is used when the Layout Service outputs media library URLs (if you are not using a CDN). Additionally, the site name values should be configured in the Layout Service client default request values which are located in the appsettings.json file within the Rendering Host project.
+ 
+ ##### Requirement 2: Configure Experience Editor Support
+ This configuration involves several settings in various files within the project. 
+ * One of these settings can be found in the appsettings.json file of the Rendering Host, “EnableExperienceEditor” = false. 
+ * If utilizing Docker, you can find an environment setting with a value of true (Sitecore__EnableExperienceEditor: “true”) in the docker-compose.override.yml file
+ * Additionally, to support Experience Editor, you must use JSON renderings and dynamic placeholders
+
+ ###### Guide: Dependencies to Support the Experience Editor
+ * JSON Renderings
+ * Dynamic Placeholders
+
+ ##### Requirement 3: Understand the HTTP Request Process
+ An HTTP request comes in from the browser to be processed. Once it is determined that there is Sitecore-specific data to be rendered, the request goes through to the Rendering Engine middleware. The Rendering Engine then submits a Layout Service request that communicates with the Content Delivery instance for the JSON formatted data. The JSON is combined with the Rendering Context and model, then returned as HTML to the browser per the HTTP request.
+ As a Developer, before you begin writing component code, you will need to configure the Rendering Engine within your application with the correct middleware and routing. Take a look at how to configure the Rendering Engine routing and the Rendering Engine middleware in the guide below.
+ 
+ ###### Configure Rendering Engine Routing
+ The routing configuration is necessary for HTTP requests to be appropriately matched to the data from the Layout Service. These are configured in the Startup.cs file of the Rendering Host project and can be found in the Configure method (see figure below). If you look at the UseEndpoints field, you will see a route for errors, a route to check Sitecore first to see if the request is Sitecore specific, and then a fallback to get data from non-Sitecore areas or systems.
+ 
+ ###### Configure Middleware
+
+The last configuration to check is Middleware. Middleware is how .NET Core handles requests and responses that come into the program. Sitecore has several pieces of middleware that are configured in the Startup.cs file of the Rendering Host project. The middleware includes the integration for the Experience Editor and how HTTP requests are handled to receive information from the Layout Service. In the ConfigureServices method, under the AddSitecoreRenderingEngine service, you’ll find the .WithExperienceEditor field that enables support for the Experience Editor. Much of this is also dependent upon the NuGet packages that must be referenced. If you review the NuGet packages for the MyProject solution, you’ll find one labeled Sitecore.AspNet.ExperienceEditor, which is the dependency for Experience Editor support.
+
+
+ #### 
+
+ 
+ ### Single 3
+
+
+ ### Single 2: 
+ ### Single 3: 
+
+
+ 
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
 * [Quiz 2](https://quizlet.com/207158406/sitecore-flash-cards/) 
