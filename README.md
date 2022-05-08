@@ -752,15 +752,104 @@ When configuring a site definition for your ASP.NET Core rendered site, you must
 
 The last configuration to check is Middleware. Middleware is how .NET Core handles requests and responses that come into the program. Sitecore has several pieces of middleware that are configured in the Startup.cs file of the Rendering Host project. The middleware includes the integration for the Experience Editor and how HTTP requests are handled to receive information from the Layout Service. In the ConfigureServices method, under the AddSitecoreRenderingEngine service, you’ll find the .WithExperienceEditor field that enables support for the Experience Editor. Much of this is also dependent upon the NuGet packages that must be referenced. If you review the NuGet packages for the MyProject solution, you’ll find one labeled Sitecore.AspNet.ExperienceEditor, which is the dependency for Experience Editor support.
 
-
- #### 
-
+#### Track 2: Review View Types
+##### Model Bound Views
+ Uou must map the Layout Service response to the view component with the AddModelBoundView<TModel>() extension method.
  
- ### Single 3
+##### Custom View Components
 
+A view component consists of three files:
+* The view component class 
+* The Razor view
+* The view model class
+ 
+##### Partial Views
+A partial view renders HTML output within another view's rendered output. Creating partial views in a Sitecore rendering host application follows the standard MVC conventions. Similarly, partial view discovery in a Sitecore rendering host follows the standard rules in ASP.NET Core MVC. You must map the Layout Service response to the partial view. These mappings are configured in the ConfigureServices() method in the Startup class 
 
- ### Single 2: 
- ### Single 3: 
+#### Track 3: Understand the Use of Tag Helpers
+
+When developing with Sitecore's ASP.NET Core Rendering SDK, you can use tag helpers to render Sitecore placeholders and content fields. The six following tag helpers are available in the Sitecore.AspNet.RenderingEngine library:
+ 
+##### Placeholder tag helper
+ <sc-placeholder name="main"></sc-placeholder>
+
+##### Text Field tag helper
+ @model MyComponentModel
+ <div asp-for="@Model.Description" editable="false"></div>
+ 
+##### Rich Text Field tag helper
+ * Add it as a standalone tag:
+  @model MyComponentModel
+  <sc-text asp-for="@Model.Content"></sc-text>
+ * Add the name of a RichField property in the asp-for attribute on an HTML element:
+@model MyComponentModel
+<div asp-for="@Model.Content"></div>
+
+##### Hyperlink tag helper
+ * Add it as a standalone tag:
+
+@model MyComponent
+<sc-link asp-for="MyLink"></sc-link>
+
+ * Add the name of a HyperLinkField property in the asp-for attribute on an a HTML element:
+@model MyComponentModel
+<a asp-for="@Model.MyLink">It is my link!</div>
+ 
+##### Date tag helper
+ * Add it as a standalone tag:
+
+@model MyComponent
+<sc-date asp-for="MyDate"></sc-date>
+
+ * Add the name of a Date property in the asp-for attribute on an HTML element:
+
+@model MyComponent
+<span asp-for="MyDate" ></span>
+ 
+##### Image tag helper
+* Add it as a standalone tag:
+
+@model MyComponentModel
+<sc-img asp-for="@Model.Image" />
+
+ * Add the name of an ImageField property in the asp-for attribute on an img HTML element:
+
+@model MyComponentModel
+<img asp-for="@Model.Image" />
+
+ #### KNOWLEDGE CHECK
+ ![image](https://user-images.githubusercontent.com/1063617/167277790-8726cec6-54ba-43bf-b556-b95b967faab1.png)
+![image](https://user-images.githubusercontent.com/1063617/167277801-8ec3a366-1f9f-4001-b0bd-fca2af399317.png)
+![image](https://user-images.githubusercontent.com/1063617/167277831-62ff2154-20ba-45fc-815e-c5bbe3c56680.png)
+
+### Single 2: Explore Components in ASP.NET Core
+ #### Track 1: Implement Output Caching for Layout Services
+In this Track, you will learn how to implement output caching for Layout Services by completing the following four tasks:
+
+##### Understand how to harness caching
+ ASP.NET Core uses JSON renderings with the Layout Service. Keep in mind that for this reason, the JSON of a rendering’s layout is saved instead of the rendered HTML. When a call is made to the Layout Service, instead of reserializing the data source items, or re-executing a custom rendering contents resolver (if one exists), the cached JSON is returned.
+ 
+##### Set-up your patch config file for caching
+  You need to perform three steps to set up your patch.config file; use the guide below to explore these three steps using the MyProject solution.
+ * Step 1: Enable Caching for Your Site: Edit the sites.config patch file to set the cacheHtml property of the site to true, i.e., cacheHtml = “true”.
+ * Step 2: Modify the Default Cache Size: Set the htmlCacheSize property to an adequate value. In this example, the default cache size is set to 50 MB, i.e., htmlCacheSize= “50MB”.
+ * Step 3: Configure Cache Clearing: Add the preventHtmlCacheClear attribute to the site definition in the patch file, i.e., preventHtmlCacheClear= “true”.
+ 
+##### Determine which renderings to cache
+ * Understand the factors impacting caching.
+* Identify the needs of your business for locating renderings best suitable for caching.
+* Examine examples to study the impacts of caching.
+ 
+##### Enable caching on renderings
+Enabling caching on renderings follows the same process regardless of whether the site uses headless rendering methods such as ASP.NET Core and JSS or non-headless options such as SXA and Sitecore MVC.
+ 
+ * Option 1: Per-Usage Basis
+ * Option 2: Global Default Setting
+ 
+ ![image](https://user-images.githubusercontent.com/1063617/167278085-e7fcf2cd-1edd-40f1-b3bc-aa26c4fa3ddf.png)
+
+ #### Track 2: ...
+
 
 
  
