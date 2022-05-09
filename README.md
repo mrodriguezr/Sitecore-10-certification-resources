@@ -878,6 +878,11 @@ This Track will review the differences between scaling a Sitecore XP and Sitecor
 ![image](https://user-images.githubusercontent.com/1063617/167322376-e4ea89e2-aed3-4f08-829f-6de102f9fbf8.png)
 
 
+ ## DEVELOPING WITH THE ASP.NET CORE RENDERING SDK
+ ### Single 1: Explore the component creation environment
+ 
+ ### Single 2: 
+
 
 
  
