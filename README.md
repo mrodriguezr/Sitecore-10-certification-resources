@@ -822,7 +822,8 @@ When developing with Sitecore's ASP.NET Core Rendering SDK, you can use tag help
 ![image](https://user-images.githubusercontent.com/1063617/167277801-8ec3a366-1f9f-4001-b0bd-fca2af399317.png)
 ![image](https://user-images.githubusercontent.com/1063617/167277831-62ff2154-20ba-45fc-815e-c5bbe3c56680.png)
 
-### Single 2: Explore Components in ASP.NET Core
+### Single 3: ASP.NET Production Considerations
+
  #### Track 1: Implement Output Caching for Layout Services
 In this Track, you will learn how to implement output caching for Layout Services by completing the following four tasks:
 
@@ -848,7 +849,34 @@ Enabling caching on renderings follows the same process regardless of whether th
  
  ![image](https://user-images.githubusercontent.com/1063617/167278085-e7fcf2cd-1edd-40f1-b3bc-aa26c4fa3ddf.png)
 
- #### Track 2: ...
+ #### Track 2: Consider Scaling ASP.NET Core in Production
+This Track will review the differences between scaling a Sitecore XP and Sitecore XM environment, how content impacts scaling needs, and the importance of performance testing.
+
+ ##### Differences between Scaling a Sitecore XP and XM Environment
+ To better understand the scaling concept with a Rendering Host within the architecture, you will need to complete the three actions mentioned below:
+
+###### Take a closer look at the Layout Service.
+ The Layout Service exists within the Content Delivery instance (see Figure 2), so you are basically adjusting the scale of that Layout Service with regards to the ASP.NET Core Rendering Host. Keep in mind that these features are the result of separating the content data from the presentation data. At the time of this writing, preliminary testing indicates that the recommended scale ratio is 0.8 Rendering Host to Layout Service in a Sitecore XP topology. In a Sitecore XM topology, the recommended scale ratio increases to 1.5 Rendering Host to Layout Service.
+ 
+
+ ###### Explore the two types of scaling.
+ The Rendering Host and Layout Service supports both horizontal and vertical scaling. Horizontal scaling (see Figure 3) is when additional instances are created to support the load and is also known as scaling out. Vertical scaling (see Figure 3) is when other resources are added to a single instance to support the load and is also known as scaling up. For optimizing the scaling costs with a Sitecore environment, it is recommended to use horizontal scaling for both the Rendering Host and the Layout Service.
+
+ ###### Understand additional scaling considerations. 
+ It is also important to consider the impact that scaling can have on the Sitecore environment's other features such as databases, Redis, xConnect, and the tracker.
+
+ ##### Impact of Content Size
+ With little content, you can push the Rendering Host to near 100% capacity of its CPU. However, if the content is large, the CPU usage will get stuck at or below 90%. The process is very input-output bound, which creates a throughput issue. By decreasing the content data, you can increase the performance level of the Rendering Host
+
+ ##### Performance Testing
+ Because each implementation is different, only after completing a performance test or load test will you determine how to scale the various pieces of the architecture appropriately. As you prepare your test environment, it is critical to keep it as close as possible to your production environment; any major differences between the environments could lead to inaccurate test results.
+ 
+ #### KNOWLEDGE CHECK
+ ![image](https://user-images.githubusercontent.com/1063617/167322228-1c2677ef-a4a9-4035-a72f-5fd498595671.png)
+ ![image](https://user-images.githubusercontent.com/1063617/167322284-68ffa832-3ba9-4e3b-b18d-4f71d6cbe2b0.png)
+![image](https://user-images.githubusercontent.com/1063617/167322358-a4aef9ca-fb1a-4edc-af29-80446cb5c537.png)
+![image](https://user-images.githubusercontent.com/1063617/167322376-e4ea89e2-aed3-4f08-829f-6de102f9fbf8.png)
+
 
 
 
