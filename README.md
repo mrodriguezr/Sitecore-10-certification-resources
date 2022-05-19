@@ -1012,9 +1012,79 @@ Publishing the Platform project, which corresponds to the Content Management con
 ![image](https://user-images.githubusercontent.com/1063617/169195321-e8181ecc-5465-40f0-a6bb-4a32cda49fac.png)
 ![image](https://user-images.githubusercontent.com/1063617/169195348-3afd2971-7a92-4783-9b0d-d8e538b66d90.png)
 
-
-
+ ### Single 3: Create components with more advanced functions
+ #### Tutorial: Advanced component creation considerations
+ ##### Layout Service NuGet package
+The Sitecore.LayoutService NuGet package (seen in Figure 1) provides assemblies, types, and classes needed for extending the Layout Service server output. The output contains Sitecore content and provides it to the Sitecore rendering host.
  
+ ##### Rendering Contents Resolver items
+Rendering Contents Resolvers allow you to define a Sitecore query or .NET class that customizes the output of a JSON Rendering. With a contents resolver, a model-bound view component can access complex data beyond what is typically available when using a standard data source item. You can then write custom C# code to use the Layout Service output in different ways. Contents resolvers are often used for items such as site navigation components, search bar components, or even user login features. Contents resolvers are created in the content tree under sitecore/System/Modules/Layout Service/ Rendering Contents Resolvers
+ 
+ ##### Knowledge check
+ ![image](https://user-images.githubusercontent.com/1063617/169360691-d72026f9-d1f0-4317-a068-96ee6f77f702.png)
+![image](https://user-images.githubusercontent.com/1063617/169360754-41735272-0f60-4b17-80d7-aa4d4fea93c1.png)
+
+ #### Coding: Creating a contents resolver model-bound view
+ For this lesson, you will learn how to create a navigation component by completing the following steps:
+
+ ##### Step 1: Add templates and contents resolver classes
+ Before beginning development of the navigation component, confirm you have the Sitecore.LayoutService NuGet package. There is no need for a new Sitecore data template with this component as you are rendering data from existing templates. The templates class gives a structured way to reference the ID of those specific templates and their fields. 
+ 
+ ##### Step 2: Create contents resolver and JSON rendering items 
+ * Create the Contents Resolver
+ * Create the JSON rendering
+ * Associate the newly created resolver in the JSON Rendering
+ 
+ ##### Step 3: Build model and view
+ Returning to Visual Studio, you'll create the model and view (see Figure 3) associated with the navigation component. Even though the model does not directly correlate to a data template, it is necessary for the structure of the navigation component.
+
+ ###### NavigationModel.cs
+ The navigation model class is placed under the Models folder of the RenderingHost project.  This provides a strongly- typed class that maps to the data returned by the Sitecore Layout Service in the contents resolver of the JSON rendering created earlier.
+ 
+ ###### [SitecoreComponentField]
+ Because this model does not bind directly to Sitecore fields, you can use standard types like <em>string</em>. However, you need to explicitly attribute them with [SitecoreComponentField].
+ ###### "Navigation Rendering.cshtml" view
+ The name of the view and the name of the JSON rendering need to match for ease of component registration later on. As you can see this is a simple HTML output for the navigation component.
+
+ ###### Tag helpers
+ As you can see, in this type of view, we are not using Sitecore tag helpers since the content does not need to be edited from this component.
+
+ ##### Step 4: Register and test the model-bound view
+To use the component, you'll still need to register the model-bound within the Startup.cs class (see Figure 4). Once registered and saved, you can access the rendering host URL to review the changes. 
+ 
+ #### Tutorial: Partial view and custom view components
+ ##### Partial view components
+Partial view components are typically for more lightweight, structural components of a Sitecore page. These partial views often render HTML output within another view's rendered output. They are helpful for carrying the load of structure and layout without being bulky like model-bound components or complex custom view components. However, the partial view component is no exception and must be registered in the Startup.cs class in order to be used on a Sitecore page
+ 
+ ##### Custom view components
+ In ASP.NET, view components are similar to partial view components but tend to be more powerful. Custom view components in Sitecore can be used for reusable logic that is too complex for the model-bound view component, such as navigation headers, search features, or login components. Just like the model-bound and partial view components, once the view component is completed, it needs to be registered within the Startup.cs class of the RenderingHost project
+ Standard ASP.NET view components do not use model binding. However, the Sitecore ASP.NET Core Rendering SDK enables binding of a model to the Layout Service output. These custom view components require three files: a view component class, a Razor view, and a view model class (as shown in Figure 3). Without these three files, your custom view component will not work appropriately with Sitecore.
+ 
+ ##### Knowledge check
+ ![image](https://user-images.githubusercontent.com/1063617/169367335-c5d5d0b9-d8a3-47a2-b8a4-8c8298fdbd90.png)
+![image](https://user-images.githubusercontent.com/1063617/169367509-676f8e36-1244-47c1-a414-4f0d732bd0a2.png)
+
+ #### Coding: Creating a view component with custom logic
+  In this lesson, you will learn how to create a view component with custom logic
+ 
+ ##### Step 1: Create data template and JSON rendering item
+ This example view component renders both Sitecore-based content and content provided using custom logic to draw data from an interface. First, you need to create the data template for the Sitecore content and the JSON rendering item for the component. Once complete, you'll need to finish by adding the component to the Allowed Controls of a placeholder and adding it to a page,
+ 
+ ##### Step 2: Make service interface and class
+For this example, a fake service is used to implement custom logic for the component. In a real-world situation, the fake service would be replaced with an interface or integration that supplies data values to a component. In this case, you'll need to make the interface and service class. Once completed, registering the service to the Startup.cs class will allow you to use it within the view component 
+
+ ##### Step 3: Create the model, view component class, and Razor view
+A view component consists of three files: the view model class, the view component class, and the Razor view to display the content (see Figure 3). In this example, the view component class contains the custom logic around populating the data from the service created earlier
+
+ ##### Step 4: Test and populate content to the service data source
+
+#### Knowledge check
+![image](https://user-images.githubusercontent.com/1063617/169374076-32198128-bd33-4a73-b61b-04f71a550ddf.png)
+![image](https://user-images.githubusercontent.com/1063617/169374180-120f5cc2-8251-4023-a162-aa4a89f180c0.png)
+![image](https://user-images.githubusercontent.com/1063617/169374282-414d9295-9805-4cc1-a1b5-5ca5e59e1f2b.png)
+
+ ##### 
+
 ## Quiz
 * [Quiz 1](https://quizlet.com/216770743/sitecore-developer-certification-flash-cards/) 
 * [Quiz 2](https://quizlet.com/207158406/sitecore-flash-cards/) 
