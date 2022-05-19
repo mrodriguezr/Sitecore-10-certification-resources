@@ -880,8 +880,137 @@ This Track will review the differences between scaling a Sitecore XP and Sitecor
 
  ## DEVELOPING WITH THE ASP.NET CORE RENDERING SDK
  ### Single 1: Explore the component creation environment
+ #### Tutorial: Sitecore using Docker containers
+ ##### Sitecore XP0 architecture
+The Getting Started template deploys Sitecore Experience Platform in an XP0 configuration (see Figure 2) to Docker containers. In an XP0 environment, the features of xConnect are condensed into fewer containers and the Content Management (CM) role encompasses the responsibilities of the Content Delivery (CD) role, so neither the CD nor Redis cache have independent containers.
  
- ### Single 2: 
+ ##### The docker-compose files and docker-compose up 
+ The docker-compose.yml file included with the Getting Started template is designed to provide a base Sitecore environment. The included docker-compose.override.yml file implements specific changes to the base environment included in the docker-compose.yml file. 
+ The docker-compose up command merges the override changes with the base docker-compose.yml file for complete execution and deployment of a Sitecore environment to containers. This structure makes upgrading easier because you can replace the docker-compose.yml file with the newest version of Sitecore.
+ 
+ ##### Containers and the Getting Started template
+ Available services in the docker-compose.yml file:
+* traefik: This container is for the reverse proxy needed to manage requests to and from the browser and the Sitecore environment. The default port for Traefik dashboard is 8079. To access the Traefik dashboard, you can type localhost:8079 into any browser. From the dashboard, you can view the HTTP values for the identity server, the rendering host, and the content management containers.
+ * mssql: This container houses the Microsoft SQL databases needed for the proper operation of the Sitecore instance.
+ * solr: This container is for the Solr indexes for the Sitecore environment. The default port for Solr is 8984. To access Solr, you can type localhost:8984 into any browser. From there, you can search and manage the indexes directly.
+ * id: This container is for the authentication component of a Sitecore deployment, the Identity Server. As you access various points of the Sitecore environment, you will be redirected to the Identity Server to authenticate your access, including if you choose to use the Sitecore Content Serialization CLI.
+ * cm: This container is for the Content Management role of the environment, which is the administrative interface for Sitecore, including the Content Editor, Experience Editor, and the Sitecore Launchpad. With an XP0 configuration, the Content Management role also acts as the Content Delivery service. 
+ * Additional containers: 
+ These additional containers are part of a full Sitecore Experience Platform deployment and are important for handling the more complex parts of Sitecore's marketing automation and data processing features. If you are deploying a Sitecore Experience Management (Sitecore XM) architecture to containers, you will not have these containers. 
+xconnect—xConnect
+xdbsearchworker—xDB Search Worker
+xdbautomationworker—xDB Automation Worker
+cortexprocessingworker—Cortex Processing Worker
+
+ Available services in the docker-compose.override.yml file:
+ * rendering: This is the container for the ASP.NET Core rendering host that supports headless development with Sitecore. It has two possible parent images, depending on if it is set to debug. When the BUILD_CONFIGURATION environment variable is set to debug, the image used for initiating the rendering container will include the ASP.NET Core Rendering SDK and will run dotnet watch. The associated Visual Studio project source is mounted into the rendering container, so dotnet watch will recompile and restart the rendering host process when changes are saved to the source folder.
+
+##### Environment variables and the .env file
+As you can see from the docker-compose.yml and docker-compose.override.yml files, there are several variables used throughout. With the Getting Started template, Sitecore provides a .env file (seen in Figure 6) where all the settings and default environment variables are stored. When running the init.ps1 script, a few of the environment variables were set by your input. 
+ 
+ ##### Knowledge check
+ ![image](https://user-images.githubusercontent.com/1063617/169187665-a74ec846-43bb-43e2-aace-adda96e3a8b4.png)
+ ![image](https://user-images.githubusercontent.com/1063617/169187717-db92eb00-a4ee-491b-9c5a-ee31929d3fff.png)
+ 
+ #### Walkthrough: Managing your containers
+##### How to access and assess each container
+ * Option 1 - Powershell: From PowerShell, using the command docker ps -a you can view all currently active containers. 
+ * Option 2 - Docker desktop: The Docker Desktop Dashboard provides you with insight into how your containers are operating and the current status of each. 
+ * Option 3 - Visual studio: In Visual Studio, you can access your running containers by selecting View, Other Windows, then Containers. This will open the Containers Visual Studio window. 
+ 
+##### How to reset or restart containers
+ Sitecore provides a set of scripts to return the environment to its default state, clearing all items and customizations. To do this, you'll need to run the clean.ps1 script, then use the up.ps1 script again to reinitialize the environment. 
+ 
+##### How to access the log for a container
+ * Option 1 - Powershell: To view the log of a given container in PowerShell, you can use the docker-compose logs -f <container name> command. 
+ * Option 2 - Docker desktop: By selecting a container in the Docker Desktop application, you can view more details about the container, most notably, the logs. You can also inspect the container and check the stats for it.
+ * Option 3 - Visual studio: In the Containers window of Visual Studio, with a container selected, you can change the details panel on the right to display the log for that container. 
+
+
+ #### The MyProject Visual Studio solution file
+ The provided solution file has two projects: Platform and RenderingHost (see Figure 2). The Platform project corresponds to the running Content Management environment; any publishes from this project may cause the Content Management environment to refresh. The RenderingHost project corresponds to the rendering host. 
+ 
+ #### The RenderingHost project
+ The RenderingHost project, as seen in Figure 3, should be highlighted as it is the primary project and is considered the startup project which will run when debugging in Visual Studio. The RenderingHost project is also where you’ll be creating models and views necessary to support custom components. Models are placed under the Models folder and Views are under the Views folder in the subfolder path
+ 
+ #### The Platform project
+The Platform project, seen in Figure 4, corresponds to the Content Management container and contains the code and configuration for that part of the Sitecore platform. To deploy any code changes to the configuration, assemblies, or content, this project will need to be published from Visual Studio. If changes are made to the Platform project, debugging is an optional, but recommended step.
+ 
+ #### Sitecore Content Serialization
+ * Sitecore Command Line Interface (CLI) 
+ * Sitecore for Visual Studio
+
+#### Knowledge check
+![image](https://user-images.githubusercontent.com/1063617/169189713-01f38514-8b2d-4739-bcf6-e93fa3014ce4.png)
+![image](https://user-images.githubusercontent.com/1063617/169189726-bf438510-6835-4414-9f9c-998a6d5dacdf.png)
+ ![image](https://user-images.githubusercontent.com/1063617/169191247-5214378e-4654-4659-8815-03f3a1d68852.png)
+![image](https://user-images.githubusercontent.com/1063617/169191307-a0042cad-2fd5-4865-9a5c-6f81f97c09e7.png)
+![image](https://user-images.githubusercontent.com/1063617/169191415-2746d977-67fc-48e7-8db7-d23937042675.png)
+![image](https://user-images.githubusercontent.com/1063617/169191485-a77447d8-0eba-4a36-9add-5492a38c24ef.png)
+![image](https://user-images.githubusercontent.com/1063617/169191536-4e8177a0-2585-4fba-a9a8-155185636e06.png)
+
+ ### Single 2: Create a basic model-bound component
+ #### Tutorial: Defining the component model in Sitecore
+ 
+ ##### Create data templates and data sources
+  Data templates are Sitecore items created to provide structure to content and data through the Sitecore system. 
+ After creating a data template, it's also important to set the standard (or default) values (see Figure 2). When the template is used to create an item, the standard values will be the initial values for the new item before being edited or changed by the creator. Items are created independently from the presentation of the website, and templates do not always correspond to a full website page.
+ 
+ ##### Create a JSON rendering item
+ If you have worked previously with Sitecore MVC, the rendering items created within Sitecore were either view or controller renderings. When working with Sitecore headless SDKs the preferred rendering item is a JSON rendering 
+ 
+ ##### Adjust the Allowed Controls of a placeholder
+ With both a template and JSON rendering created, the JSON rendering should be added to the Allowed Controls section of any target placeholder settings items. Placeholders are the sections of the page layout where renderings can be added. Placeholder settings items are found in the Sitecore/layout/Placeholder Settings file path of the content tree.
+ 
+ ##### Add the rendering to a page
+ To test the component visually on a page in both Sitecore and the rendering host, it will need to be added to an instance of the placeholder on a page, such as the home page or other easily accessible content page
+ The newly added component in the Experience Editor should render an “Unknown component” error, as seen in Figure 6. This is because there is no component code mapped to the JSON rendering as it has yet to be created in Visual Studio. This is normal at this stage. 
+
+ ##### Check the logs of the rendering host for errors
+ It's good practice to ensure the output from the Layout Service is being pushed appropriately before moving on to create the component model, view, and registration. To verify this information, you can pull the logs from the rendering host. With the rendering host open to the home page, use the command docker-compose logs -f in PowerShell to review the JSON output from the Layout Service response.
+ 
+ ##### Knowledge check 
+ ![image](https://user-images.githubusercontent.com/1063617/169192802-061ff969-5f4e-4214-88be-0ab0ccecd16d.png)
+![image](https://user-images.githubusercontent.com/1063617/169192861-1db26978-9577-4f41-a637-49edd30dc342.png)
+
+ 
+ #### Tutorial: Creating model-bound components
+ ##### Model and view
+ A model for a Sitecore ASP.NET Core component, just like that of a Sitecore MVC component, contains the fields and field names utilized in the data template. These are automatically data-bound due to type inheritance from IField
+ 
+ ##### Register the component
+ This registration process is necessary to map the JSON rendering created in Sitecore with the associated model-bound view created in Visual Studio. With the registration, the placeholder can render the component with the Layout Service output. The views are registered in the Startup.cs class within the rendering host associated project, as seen in Figure 3. Within the Startup.cs class, locate the service AddSitecoreRenderingEngine call within the ConfigureServices method and add the view using the following method: 
+
+.AddModelBoundView<ModelName>("RenderingName")
+ 
+ ##### dotnet watch and publishing
+ If you are using the Getting Started template, the dotnet watch process runs on the rendering container with the RenderingHost project source mounted into the container. When changes are saved, the dotnet watch process will automatically recompile the changes and restart the rendering host process in the container.
+
+Publishing the Platform project, which corresponds to the Content Management container, will push changes into the Sitecore instance. If you have Sitecore open, it may refresh during a publish; otherwise, the container will continue to operate normally. 
+ 
+ ##### Review your changes
+ Once you've finished the component creation process and published all your changes, you can review your changes in two places: the rendering host or the Experience Editor
+ 
+ ##### Knowledge check
+ ![image](https://user-images.githubusercontent.com/1063617/169194197-badf0375-6df2-4235-801b-0dd5d5d5c6bc.png)
+![image](https://user-images.githubusercontent.com/1063617/169194264-d5648914-8533-4587-8026-0db1f60e6fca.png)
+
+ #### Coding: Finalizing a model-bound component
+ ##### DataSourceExample model
+ The model (see Figure 1) is a simple class that mirrors the content found in the data template within Sitecore. The properties in this type of class are automatically data-bound due to inheriting their types from IField.
+ 
+ ##### DataSourceExample view
+ The view (see Figure 2) is a Razor file that contains both markup and C# code for the layout and potentially the design of the component. HTML and CSS can be utilized within this file as well as Sitecore tag helpers to render the fields from the model.
+ 
+ ##### Startup.cs class view registration
+ Before it can be used, the view needs to be registered in the Startup.cs class (see Figure 3) for the rendering host. Under the ConfigureServices method, you'll find the .AddSitecoreRenderingEngine call. If you are using the Getting Started template MyProject solution, you'll see an example of a model-bound view already registered for the ContentBlock component
+ 
+ ##### Knowledge check
+![image](https://user-images.githubusercontent.com/1063617/169195072-2af339f5-80f4-4bc8-89e6-8e8e453fbe5d.png)
+![image](https://user-images.githubusercontent.com/1063617/169195100-c7add67d-927b-491d-9c39-fadf524ba63a.png)
+![image](https://user-images.githubusercontent.com/1063617/169195272-080a003e-1d27-422b-b82e-9ebd277c116a.png)
+![image](https://user-images.githubusercontent.com/1063617/169195321-e8181ecc-5465-40f0-a6bb-4a32cda49fac.png)
+![image](https://user-images.githubusercontent.com/1063617/169195348-3afd2971-7a92-4783-9b0d-d8e538b66d90.png)
 
 
 
